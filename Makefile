@@ -1,4 +1,3 @@
-.RECIPEPREFIX = >
 ifeq ($(strip $(DEVKITARM)),)
 $(error "DEVKITARM is not set")
 endif
@@ -16,16 +15,16 @@ OBJS    := $(patsubst %.c,%.o,$(wildcard source/*.c))
 all: $(TARGET).3dsx
 
 $(TARGET).elf: $(OBJS)
-> $(CC) $(LDFLAGS) $(OBJS) $(LIBS) -o $@
+	$(CC) $(LDFLAGS) $(OBJS) $(LIBS) -o $@
 
 $(TARGET).smdh:
-> smdhtool --create "Missing Games" "Find uninstalled 3DS games" "dd" $(CTRULIB)/default_icon.png $@
+	smdhtool --create "Missing Games" "Find uninstalled 3DS games" "dd" $(CTRULIB)/default_icon.png $@
 
 $(TARGET).3dsx: $(TARGET).elf $(TARGET).smdh
-> 3dsxtool $(TARGET).elf $@ --smdh=$(TARGET).smdh
+	3dsxtool $(TARGET).elf $@ --smdh=$(TARGET).smdh
 
 %.o: %.c
-> $(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-> rm -f source/*.o *.elf *.smdh *.3dsx
+	rm -f source/*.o *.elf *.smdh *.3dsx
