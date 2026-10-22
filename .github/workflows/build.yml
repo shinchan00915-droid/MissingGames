@@ -1,0 +1,26 @@
+name: Build 3dsx
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  db:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate db.txt (latest 3dsdb data)
+        run: python3 tools/make_db.py db.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: db
+          path: db.txt
+  build:
+    runs-on: ubuntu-latest
+    container: devkitpro/devkitarm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: make
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 3dsx
+          path: MissingGames.3dsx
